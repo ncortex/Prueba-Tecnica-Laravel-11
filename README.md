@@ -84,9 +84,9 @@ curl -X GET http://localhost:8000/api/favorites \
 - Validar TODAS las peticiones usando el validador de Laravel por defecto.
 
 ## Posibles mejoras
-- añadir tests. En este proyecto no he añadido tests, pero sería una mejora importante para asegurar que todo funciona correctamente y que se pudiese ampliar el proyecto sin miedo a romper la funcionalidad.
-- mantener un id propio para cada personaje. En este proyecto he usado el mismo id que proporciona la API, pero podría haber usado uno que asigne yo (aunque coincida). De esta forma, si la API externa cambia el id de un personaje, o si se cambia de API externa, no afectaría a nuestra BD.
-- hacer una interfaz web para la API. En este proyecto he hecho solo la API, pero se podría hacer una interfaz web para que los usuarios puedan interactuar con la API de forma más visual.
+- Añadir tests. En este proyecto no he añadido tests, pero sería una mejora importante para asegurar que todo funciona correctamente y que se pudiese ampliar el proyecto sin miedo a romper la funcionalidad.
+- Mantener un id propio para cada personaje. En este proyecto he usado el mismo id que proporciona la API, pero podría haber usado uno que asigne yo (aunque coincida). De esta forma, si la API externa cambia el id de un personaje, o si se cambia de API externa, no afectaría a nuestra BD.
+- Hacer una interfaz web para la API. En este proyecto he hecho solo la API, pero se podría hacer una interfaz web para que los usuarios puedan interactuar con la API de forma más visual.
 
 ## Endpoints
 
@@ -113,10 +113,10 @@ curl -X POST http://localhost:8000/api/register \
 
 En caso de éxito devuelve un token de autenticación. Si no, devuelve un mensaje de error.
 ```
-curl -X POST http://localhost:8000/api/login \
+YOUR_ACCESS_TOKEN=$(curl -X POST http://localhost:8000/api/login \
 -H "Content-Type: application/json" \
 -d '{"email": "jerry_smith@msn.com",
-     "password": "123456"}'
+     "password": "123456"}')
 ```
 
 ### GET /api/characters
@@ -149,7 +149,7 @@ curl -X GET http://localhost:8000/api/characters/15
 Devuelve la lista de personajes favoritos de usuario autenticado.
 ```
 curl -X GET http://localhost:8000/api/favorites \
--H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+-H "Authorization: Bearer $YOUR_ACCESS_TOKEN" \
 -H "Content-Type: application/json" 
 ```
 ### POST /api/favorites
@@ -160,7 +160,7 @@ Añade un personaje a la lista de favoritos del usuario autenticado.
 
 ```
 curl -X POST http://localhost:8000/api/favorites \
--H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+-H "Authorization: Bearer $YOUR_ACCESS_TOKEN" \
 -H "Content-Type: application/json" \
 -d '{"id": 15}'
 ```
@@ -172,7 +172,7 @@ Elimina un personaje de la lista de favoritos del usuario autenticado.
 
 ```
 curl -X DELETE http://localhost:8000/api/favorites \
--H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+-H "Authorization: Bearer $YOUR_ACCESS_TOKEN" \
 -H "Content-Type: application/json" \
 -d '{"id": 15}'
 ```

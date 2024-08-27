@@ -1,6 +1,8 @@
 # Readme
 Prueba técnica para la empresa **** escrita en PHP8.2 usando Laravel 11 como framework.
-He intentado centrarme extrictamente en los requerimientos de la prueba, por lo que no he añadido ninguna funcionalidad extra, sino que he preferido pulir la implementación de la funcionalidad requerida, sin reinventar la rueda.
+He intentado centrarme extrictamente en los requerimientos de la prueba, por lo que no he añadido ninguna funcionalidad extra, sino que he preferido pulir la implementación de la funcionalidad requerida, sin reinventar la rueda. La mayoría de mis cambios están en este commit:
+[https://github.com/ncortex/Prueba-Tecnica-Laravel-11/commit/33539c6d09394b7a5a522084a3118ac3dfa42a63](https://github.com/ncortex/Prueba-Tecnica-Laravel-11/commit/33539c6d09394b7a5a522084a3118ac3dfa42a63)
+
 
 [link_pdf_prueba]
 

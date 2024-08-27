@@ -4,7 +4,7 @@ He intentado centrarme extrictamente en los requerimientos de la prueba, por lo 
 
 [link_pdf_prueba]
 
-## instalación
+## Instalación
 
 1. Clonar el repositorio
    ```
@@ -72,7 +72,7 @@ curl -X GET http://localhost:8000/api/favorites \
 -H "Authorization: Bearer $YOUR_ACCESS_TOKEN" \
 -H "Content-Type: application/json" 
 ```
-## decisiones clave 
+## Decisiones clave 
 - Uso del ingles como idioma de desarrollo.
 - Uso de sanctum como sistema de autenticación. Es el sistema recomendado por Laravel para casos como este, y se ocupa de todo lo relativo a la autenticación de usuarios, incluida la generación de tokens para acceso vía API.
 - Uso del sistema de paginación por defecto de Laravel.
@@ -82,11 +82,13 @@ curl -X GET http://localhost:8000/api/favorites \
 - En vez de crear una tabla de favoritos, los favoritos se almacenan en forma de array en una columna de la tabla `users`. De esta manera se pueden recuperar todos los favoritos de un usuario en una sola lectura de la BD. Por contra, haría mas ineficiente,por ejemplo, una consulta que cuente el numero de favoritos que tiene un personaje. Esto se podría solucionar añadiendo un contador en la tabla de personajes y actualizandolo cuando un usuario lo añada o elimine de sus favoritos.
 - He eliminado el campo nombre en el modelo de usuario, ya que no es necesario. He eliminado también los métodos a autenticación que no se usan en la API.
 - Validar TODAS las peticiones usando el validador de Laravel por defecto.
-## posibles mejoras
+
+## Posibles mejoras
+- añadir tests. En este proyecto no he añadido tests, pero sería una mejora importante para asegurar que todo funciona correctamente y que se pudiese ampliar el proyecto sin miedo a romper la funcionalidad.
 - mantener un id propio para cada personaje. En este proyecto he usado el mismo id que proporciona la API, pero podría haber usado uno que asigne yo (aunque coincida). De esta forma, si la API externa cambia el id de un personaje, o si se cambia de API externa, no afectaría a nuestra BD.
 - hacer una interfaz web para la API. En este proyecto he hecho solo la API, pero se podría hacer una interfaz web para que los usuarios puedan interactuar con la API de forma más visual.
 
-## endpoints
+## Endpoints
 
 ### POST /api/register
 

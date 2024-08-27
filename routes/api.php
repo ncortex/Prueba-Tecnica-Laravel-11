@@ -12,7 +12,7 @@ Route::post('/register', [AuthController::class, 'postRegister'])->name('registe
 Route::get('/characters', [CharacterController::class, 'getCharacters']);
 Route::get('/characters/{id}', [CharacterController::class, 'getCharacter'])->where(['id' => '[0-9]+']);
 
-Route::get('/favorites', [UserController::class, 'getFavorites'])->middleware('auth:sanctum');
-Route::post('/favorites', [UserController::class, 'postFavorite'])->middleware('auth:sanctum');
-Route::delete('/favorites', [UserController::class, 'deleteFavorite'])->middleware('auth:sanctum');
+Route::get('/favorites', [UserController::class, 'getFavorites']);
+Route::post('/favorites', [UserController::class, 'postFavorite']);
+Route::delete('/favorites', [UserController::class, 'deleteFavorite']);
 

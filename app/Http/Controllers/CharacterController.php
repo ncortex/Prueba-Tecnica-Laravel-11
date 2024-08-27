@@ -56,6 +56,7 @@ class CharacterController extends Controller {
     }
 
     public function getCharacter(Request $request, $id){
+        // $id already validated by Laravel in the route definition
         $character = Character::findOrFail($id);
 
         return response()->json($character);

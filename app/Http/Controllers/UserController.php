@@ -7,12 +7,18 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class UserController extends Controller {
+class UserController extends Controller implements HasMiddleware{
     use ValidatesRequests;
+
+    // All requests done to this controller must be authenticated
+    public static function middleware() : array {
+        return ['auth:sanctum'];
+    }
 
     public function getFavorites(Request $request){
         $characters = Character::whereIn('id', $request->user()->favorites)->get();
@@ -53,6 +59,7 @@ class UserController extends Controller {
 
         return response()->json(['message' => 'Character removed from favorites']);
     }
+
 
 
 }

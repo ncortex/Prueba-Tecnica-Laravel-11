@@ -20,7 +20,6 @@ He intentado centrarme extrictamente en los requerimientos de la prueba, por lo 
     cp .env.example .env
    ```
 4. Crear una base de datos y rellenarla con los datos de la API externa. Puede tardar unos minutos
-   
    ```
    php artisan migrate --seed
     ```
@@ -28,8 +27,11 @@ He intentado centrarme extrictamente en los requerimientos de la prueba, por lo 
    ```
    php artisan serve
    ```
-## demo online
-[link_demo]
+6. (Opcional) Programar una tarea regular en cron para que la base de datos local se actualice regularmente
+    ```
+    0 0 * * * cd /path-to-your-project && php artisan migrate --seed >> /dev/null 2>&1
+    ```
+
 ## decisiones clave 
 - Uso del ingles como idioma de desarrollo.
 - Uso de sanctum como sistema de autenticación. Es el sistema recomendado por Laravel para casos como este, y se ocupa de todo lo relativo a la autenticación de usuarios, incluida la generación de tokens para acceso vía API.
@@ -43,34 +45,39 @@ He intentado centrarme extrictamente en los requerimientos de la prueba, por lo 
 ## posibles mejoras
 - mantener un id propio para cada personaje. En este proyecto he usado el mismo id que proporciona la API, pero podría haber usado uno que asigne yo (aunque coincida). De esta forma, si la API externa cambia el id de un personaje, o si se cambia de API externa, no afectaría a nuestra BD.
 - hacer una interfaz web para la API. En este proyecto he hecho solo la API, pero se podría hacer una interfaz web para que los usuarios puedan interactuar con la API de forma más visual.
+
 ## endpoints
 
 ### POST /api/register
-parámetros: 
 
 `email` with valid email format
 
 `password` with at least 6 characters
 
-en caso de éxito devuelve un token de autenticación. Si no, devuelve un mensaje de error.
+En caso de éxito devuelve un token de autenticación. Si no, devuelve un mensaje de error.
 
 ```
-curl -X POST http://localhost:8000/favorites \
--H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+curl -X POST http://localhost:8000/api/register \
 -H "Content-Type: application/json" \
--d '{"character_id": 1}'
+-d '{"email": "jerry_smith@msn.com",
+     "password": "123456"}'
 ```
 
 ### POST /api/login
-parámetros: 
 
 `email` with valid email format
 
 `password` with at least 6 characters
 
-en caso de éxito devuelve un token de autenticación. Si no, devuelve un mensaje de error.
+En caso de éxito devuelve un token de autenticación. Si no, devuelve un mensaje de error.
+```
+curl -X POST http://localhost:8000/api/login \
+-H "Content-Type: application/json" \
+-d '{"email": "jerry_smith@msn.com",
+     "password": "123456"}'
+```
+
 ### GET /api/characters
-parámetros: 
 
 `page` (opcional, por defecto muestra la primera página)
 
@@ -78,7 +85,52 @@ parámetros:
 
 `name` (opcional, busca personajes cuyo nombre contenga la cadena de texto)
 
-`status` (opcional, busca personajes cuyo status sea el indicado)
+`status` (opcional, busca personajes por status (Alive,Dead,unknown))
 
+`species` (opcional, busca personajes por especie)
 
+`gender` (opcional, busca personajes por género (Female,Male,Genderless,unknown))
+
+Devuelve una lista paginada y filtrada de personajes.
+
+```
+curl -X GET http://localhost:8000/api/characters
+curl -X GET http://localhost:8000/api/characters?name=rick&status=Dead&species=Human&gender=Male&page=4&per_page=10
+```
 ### GET /api/characters/{id}
+Devuelve la información de un personaje.
+
+```
+curl -X GET http://localhost:8000/api/characters/15
+```
+### GET /api/favorites
+Devuelve la lista de personajes favoritos de usuario autenticado.
+```
+curl -X GET http://localhost:8000/api/favorites \
+-H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+-H "Content-Type: application/json" 
+```
+### POST /api/favorites
+
+`id` (obligatorio, id del personaje que se quiere añadir a favoritos)
+
+Añade un personaje a la lista de favoritos del usuario autenticado.
+
+```
+curl -X POST http://localhost:8000/api/favorites \
+-H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{"id": 15}'
+```
+### DELETE /api/favorites
+
+`id` (obligatorio, id del personaje que se quiere eliminar de favoritos)
+
+Elimina un personaje de la lista de favoritos del usuario autenticado.
+
+```
+curl -X DELETE http://localhost:8000/api/favorites \
+-H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{"id": 15}'
+```

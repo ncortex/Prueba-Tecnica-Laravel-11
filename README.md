@@ -13,11 +13,11 @@ He intentado centrarme extrictamente en los requerimientos de la prueba, por lo 
    ```
 2. Instalar las dependencias
    ```
-    composer install
+   composer install
    ```
 3. Crear un archivo `.env` en la raíz del proyecto y copiar el contenido del archivo `.env.example` en él.
    ```
-    cp .env.example .env
+   cp .env.example .env
    ```
 4. Crear una base de datos y rellenarla con los datos de la API externa. Puede tardar unos minutos
    ```
@@ -31,7 +31,47 @@ He intentado centrarme extrictamente en los requerimientos de la prueba, por lo 
     ```
     0 0 * * * cd /path-to-your-project && php artisan migrate --seed >> /dev/null 2>&1
     ```
-
+Para copiar y pegar:
+```
+git clone git@github.com:ncortex/Prueba-Tecnica-Laravel-11.git
+cd Prueba-Tecnica-Laravel-11
+composer install
+cp .env.example .env
+echo "Actualizando base de datos desde la API externa. Puede tardar unos minutos."
+php artisan migrate --seed
+php artisan serve
+```
+En otra terminal:
+```
+#Register
+curl -X POST http://localhost:8000/api/register \
+-H "Content-Type: application/json" \
+-d '{"email": "jerry_smith@msn.com",
+"password": "123456"}'
+#Login
+YOUR_ACCESS_TOKEN=$(curl -X POST http://localhost:8000/api/login \
+-H "Content-Type: application/json" \
+-d '{"email": "jerry_smith@msn.com",
+     "password": "123456"}')
+#Añadir a rick y a morty a favoritos
+curl -X POST http://localhost:8000/api/favorites \
+-H "Authorization: Bearer $YOUR_ACCESS_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{"id": 1}'
+curl -X POST http://localhost:8000/api/favorites \
+-H "Authorization: Bearer $YOUR_ACCESS_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{"id": 2}'
+#Eliminar a morty de favoritos
+curl -X DELETE http://localhost:8000/api/favorites \
+-H "Authorization: Bearer $YOUR_ACCESS_TOKEN" \
+-H "Content-Type: application/json" \
+-d '{"id": 2}'
+#Listar favoritos (Debería mostrar solo a rick)
+curl -X GET http://localhost:8000/api/favorites \
+-H "Authorization: Bearer $YOUR_ACCESS_TOKEN" \
+-H "Content-Type: application/json" 
+```
 ## decisiones clave 
 - Uso del ingles como idioma de desarrollo.
 - Uso de sanctum como sistema de autenticación. Es el sistema recomendado por Laravel para casos como este, y se ocupa de todo lo relativo a la autenticación de usuarios, incluida la generación de tokens para acceso vía API.
